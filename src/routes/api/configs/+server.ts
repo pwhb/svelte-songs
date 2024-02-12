@@ -1,11 +1,11 @@
 import { MONGODB_DATABASE } from '$env/static/private';
-import CollectionSchema from '$lib/schemas/collections';
-
+import ConfigSchema from '$lib/schemas/configs';
 import clientPromise from '$lib/services/mongodb';
+import { zodExceptionHandler } from '$lib/utils/exceptions';
 import { getOptions, QueryType } from '$lib/utils/query';
 import { json, type RequestEvent, type RequestHandler } from '@sveltejs/kit';
 
-const COLLECTION = 'roles';
+const COLLECTION = 'configs';
 
 export const GET: RequestHandler = async ({ url, locals }: RequestEvent) =>
 {
@@ -16,6 +16,10 @@ export const GET: RequestHandler = async ({ url, locals }: RequestEvent) =>
         const col = db.collection(COLLECTION);
         const query = Object.fromEntries(url.searchParams);
         const { page, limit, skip, filter, sort } = getOptions(query, [{
+            key: 'name',
+            type: QueryType.String
+        },
+        {
             key: 'q',
             type: QueryType.Regex,
             searchedFields: ['name']
@@ -26,7 +30,7 @@ export const GET: RequestHandler = async ({ url, locals }: RequestEvent) =>
         return json({ success: true, page, limit, count, data }, { status: 200 });
     } catch (err)
     {
-      console.error(err);
+        console.error(err);
         return json({
             success: false,
             error: zodExceptionHandler(err) || err
@@ -43,7 +47,7 @@ export const POST: RequestHandler = async ({ request, locals }: RequestEvent) =>
         const col = db.collection(COLLECTION);
 
         const body = await request.json();
-        const validated = CollectionSchema.parse(body);
+        const validated = ConfigSchema.parse(body);
 
         const res = await col.insertOne({
             ...validated,
@@ -54,7 +58,7 @@ export const POST: RequestHandler = async ({ request, locals }: RequestEvent) =>
         return json({ success: true, data: res }, { status: 200 });
     } catch (err)
     {
-      console.error(err);
+        console.error(err);
         return json({
             success: false,
             error: zodExceptionHandler(err) || err

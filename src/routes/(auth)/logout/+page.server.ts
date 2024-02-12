@@ -1,8 +1,9 @@
 import { redirect } from '@sveltejs/kit';
 import type { Action, Actions } from './$types';
 
-const logout: Action = async ({ request, url, cookies }) => {
-	cookies.delete('token');
+const logout: Action = async ({ request, url, cookies }) =>
+{
+	cookies.delete('token', { path: '/' });
 
 	// cookies.set("token", "", {
 	//     path: '/',

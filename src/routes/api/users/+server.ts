@@ -1,5 +1,6 @@
 import { MONGODB_DATABASE } from '$env/static/private';
 import clientPromise from '$lib/services/mongodb';
+import { zodExceptionHandler } from '$lib/utils/exceptions';
 import { slugify } from '$lib/utils/formatters';
 import { json, type RequestEvent, type RequestHandler } from '@sveltejs/kit';
 import { hash } from 'argon2';
@@ -53,7 +54,7 @@ export const GET: RequestHandler = async ({ url, locals }: RequestEvent) =>
         return json({ success: true, data: docs, total: docs.length }, { status: 200 });
     } catch (err)
     {
-      console.error(err);
+        console.error(err);
         return json({
             success: false,
             error: zodExceptionHandler(err) || err
@@ -107,7 +108,7 @@ export const POST: RequestHandler = async ({ request, locals }: RequestEvent) =>
         return json({ success: true, data: res }, { status: 200 });
     } catch (err)
     {
-      console.error(err);
+        console.error(err);
         return json({
             success: false,
             error: zodExceptionHandler(err) || err
@@ -150,7 +151,7 @@ export const PATCH: RequestHandler = async ({ locals, request, cookies, params }
         return json({ success: true, data: res!.value }, { status: 201 });
     } catch (err)
     {
-      console.error(err);
+        console.error(err);
         return json({
             success: false,
             error: zodExceptionHandler(err) || err

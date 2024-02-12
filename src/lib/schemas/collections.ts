@@ -8,6 +8,11 @@ const CollectionSchema = z.object({
         path: z.string(),
         roleIds: z.array(z.string()),
     })),
+    columns: z.array(z.object({
+        label: z.string(),
+        value: z.string(),
+        type: z.string().optional()
+    }))
 });
 
 export default CollectionSchema;

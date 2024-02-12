@@ -4,13 +4,12 @@ import { MONGODB_DATABASE } from '$env/static/private';
 import clientPromise from '$lib/services/mongodb';
 
 
-export const load: PageServerLoad = async ({ locals }) =>
+export const load: PageServerLoad = async ({ locals, fetch }) =>
 {
-	const client = await clientPromise;
-	const db = client.db(MONGODB_DATABASE);
-	// const fullUser = await db.collection('users').findOne({ _id: locals.user._id });
-
+	const res = await fetch('/api/collections');
+	const data = await res.json();
 	return {
+		collections: data
 		// fullUser: serialize(fullUser)
 	};
 };

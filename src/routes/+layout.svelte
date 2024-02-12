@@ -8,7 +8,7 @@
 	});
 </script>
 
-<div class="lowercase">
+<div class="px-2 md:px-10">
 	<Navbar />
 	<slot />
 </div>

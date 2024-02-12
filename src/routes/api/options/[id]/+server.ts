@@ -1,6 +1,7 @@
 import { MONGODB_DATABASE } from '$env/static/private';
 import OptionSchema from '$lib/schemas/options';
 import clientPromise from '$lib/services/mongodb';
+import { zodExceptionHandler } from '$lib/utils/exceptions';
 import { json, type RequestEvent, type RequestHandler } from '@sveltejs/kit';
 import { ObjectId } from 'mongodb';
 
@@ -15,11 +16,11 @@ export const GET: RequestHandler = async ({ locals, cookies, params }: RequestEv
         const client = await clientPromise;
         const db = client.db(MONGODB_DATABASE);
         const col = db.collection(COLLECTION);
-        const data = await col.findOne({ name: id });
+        const data = await col.findOne({ _id: new ObjectId(id) });
         return json({ success: true, data: data }, { status: 200 });
     } catch (err)
     {
-      console.error(err);
+        console.error(err);
         return json({
             success: false,
             error: zodExceptionHandler(err) || err
@@ -63,7 +64,7 @@ export const PATCH: RequestHandler = async ({ locals, request, cookies, params }
         return json({ success: true, data: res }, { status: 201 });
     } catch (err)
     {
-      console.error(err);
+        console.error(err);
         return json({
             success: false,
             error: zodExceptionHandler(err) || err
@@ -88,7 +89,7 @@ export const DELETE: RequestHandler = async ({ locals, cookies, params }: Reques
         return json({ success: true, data: res }, { status: 200 });
     } catch (err)
     {
-      console.error(err);
+        console.error(err);
         return json({
             success: false,
             error: zodExceptionHandler(err) || err
