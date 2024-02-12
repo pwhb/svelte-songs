@@ -6,7 +6,7 @@ import clientPromise from '$lib/services/mongodb';
 
 export const load: PageServerLoad = async ({ locals, fetch }) =>
 {
-	const res = await fetch('/api/collections');
+	const res = await fetch('/api/collections?sort_by=name');
 	const data = await res.json();
 	return {
 		collections: data
