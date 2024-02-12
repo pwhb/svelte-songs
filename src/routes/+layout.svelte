@@ -1,7 +1,14 @@
 <script>
-	import Navbar from '$lib/components/Navbar.svelte';
+	import { page } from '$app/stores';
+	import Navbar from '$lib/components/layout/Navbar.svelte';
 	import '../app.css';
+
+	console.log({
+		data: $page.data
+	});
 </script>
 
-<Navbar />
-<slot />
+<div class="lowercase">
+	<Navbar />
+	<slot />
+</div>
