@@ -1,9 +1,8 @@
 <script>
 	import { page } from '$app/stores';
 
-	const { tableConfig, details, slug } = $page.data;
-
-	console.log({ details });
+	const { tableConfig, details } = $page.data;
+	const slug = 'collections';
 </script>
 
 <div class="overflow-x-auto mx-auto max-w-md">
@@ -20,6 +19,21 @@
 					<td>{details.data[column.value]}</td>
 				</tr>
 			{/each}
+
+			<tr>
+				<th>columns</th>
+				<td>
+					{#each details.data['columns'] as col}
+						<div class="p-2 m-2 rounded-lg border border-base-content">
+							<p>{col.label}</p>
+							<p>{col.value}</p>
+							{#if col.type}
+								<p>({col.type})</p>
+							{/if}
+						</div>
+					{/each}
+				</td>
+			</tr>
 		</tbody>
 	</table>
 	<div class="flex gap-10 justify-center m-10">

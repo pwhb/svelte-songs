@@ -17,7 +17,7 @@ export const GET: RequestHandler = async ({ locals, cookies, params }: RequestEv
         const client = await clientPromise;
         const db = client.db(MONGODB_DATABASE);
         const col = db.collection(COLLECTION);
-        const data = await col.findOne({ name: id });
+        const data = await col.findOne({ _id: new ObjectId(id) });
         return json({ success: true, data: data }, { status: 200 });
     } catch (err)
     {
