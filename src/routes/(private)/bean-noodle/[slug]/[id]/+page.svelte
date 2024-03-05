@@ -1,13 +1,16 @@
 <script>
 	import { page } from '$app/stores';
+	import GenericViewer from '$lib/components/viewers/GenericViewer.svelte';
+	import { DocumentMode } from '$lib/utils/enums';
 
 	const { tableConfig, details, slug } = $page.data;
 </script>
 
-<div class="overflow-x-auto mx-auto max-w-md">
+<GenericViewer mode={DocumentMode.View} />
+<!-- <div class="overflow-x-auto mx-auto max-w-md">
 	<table class="table">
 		<tbody>
-			<!-- row 1 -->
+
 			<tr>
 				<th>objectId</th>
 				<td>{details.data['_id']}</td>
@@ -25,4 +28,4 @@
 		>
 		<button class="text-white btn btn-sm btn-error">delete</button>
 	</div>
-</div>
+</div> -->

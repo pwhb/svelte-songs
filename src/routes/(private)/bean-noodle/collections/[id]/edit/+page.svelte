@@ -5,7 +5,7 @@
 	const slug = 'collections';
 </script>
 
-<div class="overflow-x-auto mx-auto max-w-md">
+<div class="overflow-x-auto mx-auto max-w-xl">
 	<table class="table">
 		<tbody>
 			<!-- row 1 -->
@@ -23,15 +23,26 @@
 			<tr>
 				<th>columns</th>
 				<td>
-					{#each details.data['columns'] as col}
-						<div class="p-2 m-2 rounded-lg border border-base-content">
-							<p>{col.label}</p>
-							<p>{col.value}</p>
-							{#if col.type}
-								<p>({col.type})</p>
-							{/if}
-						</div>
-					{/each}
+					<table class="table">
+						<tr>
+							<th>label</th>
+							<th>value</th>
+							<th>type</th>
+						</tr>
+						{#each details.data['columns'] as col}
+							<tr>
+								<td>
+									<input type="text" class="w-24 input input-xs" bind:value={col.label} />
+								</td>
+								<td>
+									<input type="text" class="w-24 input input-xs" bind:value={col.value} />
+								</td>
+								<td>
+									<input type="text" class="w-24 input input-xs" bind:value={col.type} />
+								</td>
+							</tr>
+						{/each}
+					</table>
 				</td>
 			</tr>
 		</tbody>
