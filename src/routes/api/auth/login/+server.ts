@@ -1,7 +1,6 @@
 import AuthSchema from '$lib/schemas/auth';
 import { zodExceptionHandler } from '$lib/utils/exceptions';
 import { type RequestHandler, type RequestEvent, json } from '@sveltejs/kit';
-import { ZodError } from 'zod';
 
 export const POST: RequestHandler = async ({ request }: RequestEvent) =>
 {

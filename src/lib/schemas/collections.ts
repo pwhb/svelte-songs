@@ -11,7 +11,8 @@ const CollectionSchema = z.object({
     columns: z.array(z.object({
         label: z.string(),
         value: z.string(),
-        type: z.string().optional()
+        type: z.string().optional(),
+        editable: z.boolean().default(false)
     }))
 });
 

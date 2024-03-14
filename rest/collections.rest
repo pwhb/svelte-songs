@@ -1,0 +1,61 @@
+@local = http://[::1]:5173
+@slug=collections
+@token=
+###
+GET {{local}}/api/{{slug}}
+
+###
+GET {{local}}/api/{{slug}}?q=cate
+
+###
+POST {{local}}/api/{{slug}}
+Content-Type: application/json
+
+{
+   "name": "configs",
+   "roleIds": [],
+   "routes": [],
+   "columns": [
+      {
+         "label":"name",
+         "value":"name"
+      },
+      {
+         "label":"createdAt",
+         "value":"createdAt",
+         "type":"date"
+      }
+   ]
+}
+
+###
+PATCH {{local}}/api/{{slug}}/65c9c10a115f1502dfc227a5
+Content-Type: application/json
+
+{
+   "name": "options",
+   "roleIds": [],
+   "routes": [],
+   "columns": [
+      {
+         "label":"name",
+         "value":"name"
+      },
+      {
+         "label":"label",
+         "value":"label"
+      },
+      {
+         "label":"value",
+         "value":"value"
+      },
+      {
+         "label":"createdAt",
+         "value":"createdAt",
+         "type":"date"
+      }
+   ]
+}
+
+###
+DELETE {{local}}/api/{{slug}}/65c9b7f0115f1502dfc2279e

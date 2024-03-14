@@ -18,6 +18,21 @@
 	</thead>
 	<tbody>
 		<!-- row 1 -->
+		<tr>
+			<td></td>
+			{#each tableConfig.columns as column}
+				{#if column.type === 'date'}
+					<td> </td>
+				{:else}
+					<td>
+						<input type="text" class="w-20 input input-xs input-bordered" />
+					</td>
+				{/if}
+			{/each}
+			<td>
+				<button class="btn btn-xs btn-primary">search</button>
+			</td>
+		</tr>
 		{#each data.data as row, idx}
 			<tr class="hover">
 				<td>{idx + 1}</td>

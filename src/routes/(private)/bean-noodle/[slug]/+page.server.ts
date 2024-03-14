@@ -1,8 +1,10 @@
 import type { PageServerLoad } from './$types';
 
-export const load: PageServerLoad = async ({ locals, fetch, params }) =>
+export const load: PageServerLoad = async ({ locals, fetch, params, url }) =>
 {
     const { slug } = params;
+    console.log("url", url.search);
+
     const res = await fetch(`/api/${slug}`);
     const data = await res.json();
 

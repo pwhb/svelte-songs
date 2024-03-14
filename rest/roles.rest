@@ -1,0 +1,31 @@
+@local = http://[::1]:5173
+@slug=roles
+@token=
+###
+GET {{local}}/api/{{slug}}
+
+###
+GET {{local}}/api/{{slug}}?q=cate
+
+###
+POST {{local}}/api/{{slug}}
+Content-Type: application/json
+
+{
+   "name": "methods",
+   "label": "PATCH",
+   "value": "PATCH"
+}
+
+###
+PATCH {{local}}/api/{{slug}}/65c9bf1d115f1502dfc227a4
+Content-Type: application/json
+
+{
+   "name": "methods",
+   "label": "DELETE",
+   "value": "DELETE"
+}
+
+###
+DELETE {{local}}/api/{{slug}}/65c9b7f0115f1502dfc2279e

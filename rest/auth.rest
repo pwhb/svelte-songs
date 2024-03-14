@@ -1,0 +1,20 @@
+@local = http://[::1]:5173
+@slug=auth
+@token=
+
+###
+POST {{local}}/api/{{slug}}/login
+Content-Type: application/json
+
+{
+
+}
+
+
+###
+POST {{local}}/api/{{slug}}/signin
+Content-Type: application/json
+
+{
+
+}

@@ -10,10 +10,13 @@ export const load: LayoutServerLoad = async ({ locals, fetch, params }) =>
     const colRes = await fetch(`/api/collections?name=${slug}`);
     const colData = await colRes.json();
 
+    const colTypesRes = await fetch(`/api/options?name=colTypes`);
+    const colTypesData = await colTypesRes.json();
 
     return {
         slug,
         details: data,
+        colTypes: colTypesData.data,
         tableConfig: colData.data[0]
     };
 };

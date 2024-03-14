@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { DocumentMode } from '$lib/utils/enums';
+	import { parseDate } from '$lib/utils/formatters';
 	export let mode: DocumentMode;
 
 	const { tableConfig, details: detailsRes, slug } = $page.data;
@@ -30,13 +31,12 @@
 					<tr>
 						<th>{column.label}</th>
 						<td>
-							{#if mode === DocumentMode.View}
-								<input
-									type="text"
-									disabled
-									class="input input-xs input-ghost"
-									bind:value={details[column.value]}
-								/>
+							{#if mode === DocumentMode.View || !column.editable}
+								<p class="input input-xs input-ghost">
+									{column.type === 'date'
+										? parseDate(details[column.value])
+										: details[column.value]}
+								</p>
 							{:else}
 								<input type="text" class="input input-xs" bind:value={payload[column.value]} />
 							{/if}

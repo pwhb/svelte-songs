@@ -15,18 +15,24 @@ export const GET: RequestHandler = async ({ url, locals }: RequestEvent) =>
         const db = client.db(MONGODB_DATABASE);
         const col = db.collection(COLLECTION);
         const query = Object.fromEntries(url.searchParams);
-        const { page, limit, skip, filter, sort } = getOptions(query, [{
-            key: 'q',
-            type: QueryType.Regex,
-            searchedFields: ['name', 'label', 'value']
-        }]);
+        const { page, limit, skip, filter, sort } = getOptions(query, [
+            {
+                key: 'q',
+                type: QueryType.Regex,
+                searchedFields: ['name', 'label', 'value']
+            },
+            {
+                key: 'name',
+                type: QueryType.String,
+            }
+        ]);
 
         const data = await col.find(filter, { skip, limit, sort }).toArray();
         const count = await col.countDocuments(filter);
         return json({ success: true, page, limit, count, data }, { status: 200 });
     } catch (err)
     {
-      console.error(err);
+        console.error(err);
         return json({
             success: false,
             error: zodExceptionHandler(err) || err
@@ -54,7 +60,7 @@ export const POST: RequestHandler = async ({ request, locals }: RequestEvent) =>
         return json({ success: true, data: res }, { status: 200 });
     } catch (err)
     {
-      console.error(err);
+        console.error(err);
         return json({
             success: false,
             error: zodExceptionHandler(err) || err
