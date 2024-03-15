@@ -117,11 +117,11 @@ export function getSort(sort_by?: any)
 export function getOptions(query: any, keys: QueryKey[] = [])
 {
     const page = query.page ? parseInt(query.page as string) : 0;
-    const limit = query.limit ? parseInt(query.limit as string) : DEFAULT_LIMIT;
-    const skip = page * limit;
+    const size = query.size ? parseInt(query.size as string) : DEFAULT_LIMIT;
+    const skip = page * size;
 
     const filter = getFilter(keys, query);
     const sort = getSort(query.sort_by as string);
 
-    return { page, limit, skip, filter, sort };
+    return { page, limit: size, skip, filter, sort };
 }

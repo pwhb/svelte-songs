@@ -9,6 +9,9 @@ GET {{local}}/api/{{slug}}/names
 GET {{local}}/api/{{slug}}
 
 ###
+GET {{local}}/api/{{slug}}?page=0&size=21&sort_by=name
+
+###
 GET {{local}}/api/{{slug}}?name=colTypes
 
 ###
@@ -17,8 +20,9 @@ Content-Type: application/json
 
 {
    "name": "schemaTypes",
-   "label": "objectId",
-   "value": "objectId"
+   "label": "boolean",
+   "value": "boolean",
+   "active": true
 }
 
 ###

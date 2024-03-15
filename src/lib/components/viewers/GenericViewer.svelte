@@ -12,7 +12,19 @@
 	};
 
 	const handleSubmit = async () => {
-		console.log({ payload, slug });
+		const url = `/api/${slug}${mode === DocumentMode.Create ? '' : `/${details._id}`}`;
+
+		const res = await fetch(url, {
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			method: mode === DocumentMode.Create ? 'POST' : 'PATCH',
+			body: JSON.stringify(payload)
+		});
+
+		const data = await res.json();
+
+		console.log('data', data);
 	};
 </script>
 
@@ -37,8 +49,10 @@
 										? parseDate(details[column.value])
 										: details[column.value]}
 								</p>
-							{:else}
+							{:else if column.type === 'string'}
 								<input type="text" class="input input-xs" bind:value={payload[column.value]} />
+							{:else if column.type === 'boolean'}
+								<input type="checkbox" class="toggle" bind:checked={payload[column.value]} />
 							{/if}
 						</td>
 					</tr>

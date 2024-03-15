@@ -7,7 +7,7 @@
 	{#each data as col}
 		<a
 			class="p-5 mx-10 text-center text-white rounded-lg shadow-lg bg-slate-400"
-			href={`/bean-noodle/${col.name}`}>{col.name}</a
+			href={`/bean-noodle/${col.name}?page=0&size=10`}>{col.name}</a
 		>
 	{/each}
 </div>

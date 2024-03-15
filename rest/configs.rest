@@ -14,11 +14,11 @@ GET {{local}}/api/{{slug}}?q=roles
 POST {{local}}/api/{{slug}}
 Content-Type: application/json
 
-{
+{{
    "name": "roles",
    "label": "public",
    "value": "public"
-}
+}}
 
 ###
 PATCH {{local}}/api/{{slug}}/65c9bf1d115f1502dfc227a4
