@@ -4,4 +4,4 @@
 	import { DocumentMode } from '$lib/utils/enums';
 </script>
 
-<GenericViewer mode={DocumentMode.View} />
+<GenericViewer mode={DocumentMode.Create} />

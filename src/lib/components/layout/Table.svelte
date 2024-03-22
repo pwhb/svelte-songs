@@ -1,4 +1,6 @@
-<script>
+<script lang="ts">
+	import { goto } from '$app/navigation';
+
 	// @ts-nocheck
 	import { page } from '$app/stores';
 	import { openModal } from '$lib/utils/dialog';
@@ -7,16 +9,20 @@
 	const { slug, tableConfig } = $page.data;
 	const query = Object.fromEntries($page.url.searchParams);
 
-	const getUrlFromQuery = (query) =>
+	const getUrlFromQuery = (query: any) =>
 		$page.url.pathname + `?${new URLSearchParams(query).toString()}`;
 
-	const searchQuery = {
+	const searchQuery: any = {
 		...query,
 		active: true
 	};
 </script>
 
-<DefaultDialog modalId="delete_item" title="Are you sure?" text="Are you sure you want to delete this item?" />
+<DefaultDialog
+	modalId="delete_item"
+	title="Are you sure?"
+	text="Are you sure you want to delete this item?"
+/>
 
 <table class="table">
 	<!-- head -->
@@ -24,9 +30,27 @@
 		<tr>
 			<th></th>
 			{#each tableConfig.columns as column}
-				<th>{column.label}</th>
+				<th>
+					<div class="flex flex-row justify-between items-center">
+						{column.label}
+						<div class="flex flex-col">
+							{#if $page.url.searchParams.get('sort_by') !== column.value}
+								<a href={getUrlFromQuery({ ...query, sort_by: column.value })}>
+									<img class="w-4 h-4" src="/sort-up-svgrepo-com.svg" alt="sort-up" />
+								</a>
+							{/if}
+							{#if $page.url.searchParams.get('sort_by') !== '-' + column.value}
+								<a href={getUrlFromQuery({ ...query, sort_by: '-' + column.value })}>
+									<img class="w-4 h-4" src="/sort-down-svgrepo-com.svg" alt="sort-down" />
+								</a>
+							{/if}
+						</div>
+					</div>
+				</th>
 			{/each}
-			<th></th>
+			<th>
+				<a class="text-white btn btn-xs btn-info" href={`${$page.url.pathname}/create`}>create</a>
+			</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -51,13 +75,6 @@
 				{/if}
 			{/each}
 			<td>
-				<!-- <button
-					class="btn btn-xs btn-primary"
-					on:click={() => {
-						console.log({ searchQuery });
-					}}>search</button
-				> -->
-
 				<a class="btn btn-xs btn-primary" href={getUrlFromQuery(searchQuery)}>search</a>
 			</td>
 		</tr>
@@ -99,7 +116,10 @@
 		{#if $page.data[slug].page > 0}
 			<a
 				class="join-item btn btn-xs"
-				href={getUrlFromQuery({ ...query, page: $page.data[slug].page - 1 })}>«</a
+				href={getUrlFromQuery({
+					...Object.fromEntries($page.url.searchParams),
+					page: $page.data[slug].page - 1
+				})}>«</a
 			>
 		{/if}
 		<button class="join-item btn btn-xs disabled"
@@ -108,7 +128,10 @@
 		{#if $page.data[slug].page < Math.floor($page.data[slug].count / $page.data[slug].size)}
 			<a
 				class="join-item btn btn-xs"
-				href={getUrlFromQuery({ ...query, page: $page.data[slug].page + 1 })}>»</a
+				href={getUrlFromQuery({
+					...Object.fromEntries($page.url.searchParams),
+					page: $page.data[slug].page + 1
+				})}>»</a
 			>
 		{/if}
 	</div>

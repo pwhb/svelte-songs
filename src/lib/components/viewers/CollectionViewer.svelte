@@ -24,8 +24,6 @@
 		});
 
 		const data = await res.json();
-
-		console.log('data', data);
 	};
 </script>
 
@@ -105,7 +103,6 @@
 										class="mt-6 text-white btn btn-xs btn-success"
 										type="button"
 										on:click={() => {
-											console.log('', payload.columns);
 											payload.columns = [
 												...payload.columns,
 												{

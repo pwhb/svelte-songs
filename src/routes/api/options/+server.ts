@@ -38,6 +38,7 @@ export const GET: RequestHandler = async ({ url, locals }: RequestEvent) =>
                 type: QueryType.Boolean,
             },
         ]);
+        
         const data = await col.find(filter, { skip, limit, sort }).toArray();
         const count = await col.countDocuments(filter);
         return json({ success: true, page, size: limit, count, data }, { status: 200 });

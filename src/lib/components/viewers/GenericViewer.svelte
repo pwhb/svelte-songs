@@ -7,9 +7,9 @@
 
 	const { tableConfig, details: detailsRes, slug } = $page.data;
 
-	const details = detailsRes.data;
+	const details = mode === DocumentMode.Create ? {} : detailsRes.data;
 	const payload = {
-		...detailsRes.data
+		...details
 	};
 
 	let isLoading = false;

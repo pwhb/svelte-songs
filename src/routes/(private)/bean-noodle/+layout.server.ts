@@ -13,7 +13,6 @@ export const load: LayoutServerLoad = async ({ locals, url }) =>
 
 	// const isAllowed = checkIsAllowed(locals.user.role, path);
 
-	console.log("logged in");
 
 	// if (!isAllowed)
 	// {
