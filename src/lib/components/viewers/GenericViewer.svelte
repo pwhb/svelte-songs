@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
 	import { DocumentMode } from '$lib/utils/enums';
 	import { parseDate } from '$lib/utils/formatters';
@@ -11,20 +12,30 @@
 		...detailsRes.data
 	};
 
+	let isLoading = false;
+
 	const handleSubmit = async () => {
-		const url = `/api/${slug}${mode === DocumentMode.Create ? '' : `/${details._id}`}`;
+		try {
+			isLoading = true;
+			const url = `/api/${slug}${mode === DocumentMode.Create ? '' : `/${details._id}`}`;
 
-		const res = await fetch(url, {
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			method: mode === DocumentMode.Create ? 'POST' : 'PATCH',
-			body: JSON.stringify(payload)
-		});
+			const res = await fetch(url, {
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				method: mode === DocumentMode.Create ? 'POST' : 'PATCH',
+				body: JSON.stringify(payload)
+			});
 
-		const data = await res.json();
-
-		console.log('data', data);
+			const data = await res.json();
+			if (data.success) {
+				goto(`/bean-noodle/${slug}`);
+			}
+		} catch (e) {
+			console.error(e);
+		} finally {
+			isLoading = false;
+		}
 	};
 </script>
 
@@ -63,7 +74,9 @@
 			{#if mode === DocumentMode.Create}
 				<button class="text-white btn btn-sm btn-success" type="submit">create</button>
 			{:else if mode === DocumentMode.Edit}
-				<button class="text-white btn btn-sm btn-info" type="submit">save</button>
+				<button class="text-white btn btn-sm btn-info" type="submit" disabled={isLoading}
+					>save</button
+				>
 			{:else}
 				<a
 					class="text-white btn btn-sm btn-primary"

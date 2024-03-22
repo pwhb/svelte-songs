@@ -1,12 +1,22 @@
 <script>
-// @ts-nocheck
-
-	import { goto } from '$app/navigation';
+	// @ts-nocheck
 	import { page } from '$app/stores';
+	import { openModal } from '$lib/utils/dialog';
 	import { parseDate } from '$lib/utils/formatters';
-	const { slug, [slug]: data, tableConfig } = $page.data;
+	import DefaultDialog from '../dialog/DefaultDialog.svelte';
+	const { slug, tableConfig } = $page.data;
 	const query = Object.fromEntries($page.url.searchParams);
+
+	const getUrlFromQuery = (query) =>
+		$page.url.pathname + `?${new URLSearchParams(query).toString()}`;
+
+	const searchQuery = {
+		...query,
+		active: true
+	};
 </script>
+
+<DefaultDialog modalId="delete_item" title="Are you sure?" text="Are you sure you want to delete this item?" />
 
 <table class="table">
 	<!-- head -->
@@ -27,20 +37,33 @@
 				{#if column.type === 'date'}
 					<td> </td>
 				{:else if column.type === 'boolean'}
-					<td> <input type="checkbox" class="toggle" checked /> </td>
+					<td>
+						<input type="checkbox" class="toggle" bind:checked={searchQuery[column.label]} />
+					</td>
 				{:else}
 					<td>
-						<input type="text" class="w-20 input input-xs input-bordered" />
+						<input
+							type="text"
+							class="w-20 input input-xs input-bordered"
+							bind:value={searchQuery[column.label]}
+						/>
 					</td>
 				{/if}
 			{/each}
 			<td>
-				<button class="btn btn-xs btn-primary">search</button>
+				<!-- <button
+					class="btn btn-xs btn-primary"
+					on:click={() => {
+						console.log({ searchQuery });
+					}}>search</button
+				> -->
+
+				<a class="btn btn-xs btn-primary" href={getUrlFromQuery(searchQuery)}>search</a>
 			</td>
 		</tr>
-		{#each data.data as row, idx}
+		{#each $page.data[slug].data as row, idx}
 			<tr class="hover">
-				<td>{idx + 1}</td>
+				<td>{idx + 1 + $page.data[slug].page * $page.data[slug].size}</td>
 				{#each tableConfig.columns as column}
 					{#if column.type === 'date'}
 						<td>{parseDate(row[column.value])}</td>
@@ -59,7 +82,12 @@
 				<td>
 					<a class="btn btn-xs btn-neutral" href={`/bean-noodle/${slug}/${row._id}`}>view</a>
 					<a class="btn btn-xs btn-primary" href={`/bean-noodle/${slug}/${row._id}/edit`}>edit</a>
-					<button class="text-white btn btn-xs btn-error">delete</button>
+					<button
+						class="text-white btn btn-xs btn-error"
+						on:click={() => {
+							openModal('delete_item');
+						}}>delete</button
+					>
 				</td>
 			</tr>
 		{/each}
@@ -68,21 +96,19 @@
 
 <div class="my-6 w-full text-center">
 	<div class="join">
-		{#if data.page > 0}
+		{#if $page.data[slug].page > 0}
 			<a
 				class="join-item btn btn-xs"
-				href={$page.url.pathname +
-					`?${new URLSearchParams({ ...query, page: data.page - 1 }).toString()}`}>«</a
+				href={getUrlFromQuery({ ...query, page: $page.data[slug].page - 1 })}>«</a
 			>
 		{/if}
 		<button class="join-item btn btn-xs disabled"
-			>page {data.page} / {Math.floor(data.count / data.size)}
+			>page {$page.data[slug].page} / {Math.floor($page.data[slug].count / $page.data[slug].size)}
 		</button>
-		{#if data.page < Math.floor(data.count / data.size)}
+		{#if $page.data[slug].page < Math.floor($page.data[slug].count / $page.data[slug].size)}
 			<a
 				class="join-item btn btn-xs"
-				href={$page.url.pathname +
-					`?${new URLSearchParams({ ...query, page: data.page + 1 }).toString()}`}>»</a
+				href={getUrlFromQuery({ ...query, page: $page.data[slug].page + 1 })}>»</a
 			>
 		{/if}
 	</div>

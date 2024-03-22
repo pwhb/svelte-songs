@@ -3,9 +3,7 @@ import type { PageServerLoad } from './$types';
 export const load: PageServerLoad = async ({ locals, fetch, params, url }) =>
 {
     const { slug } = params;
-    console.log("url", url.search);
-
-    const res = await fetch(`/api/${slug}`);
+    const res = await fetch(`/api/${slug}${url.search ? url.search + "&" : "?"}sort_by=name`);
     const data = await res.json();
 
     const colRes = await fetch(`/api/collections?name=${slug}`);
