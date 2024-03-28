@@ -3,7 +3,7 @@
 
 	// @ts-nocheck
 	import { page } from '$app/stores';
-	import { openModal } from '$lib/utils/dialog';
+	import { closeModal, openModal } from '$lib/utils/dialog';
 	import { parseDate } from '$lib/utils/formatters';
 	import DefaultDialog from '../dialog/DefaultDialog.svelte';
 	const { slug, tableConfig } = $page.data;
@@ -16,12 +16,31 @@
 		...query,
 		active: true
 	};
+
+	let idToBeDeleted: string = '';
+	let isLoading = false;
 </script>
 
 <DefaultDialog
 	modalId="delete_item"
 	title="Are you sure?"
-	text="Are you sure you want to delete this item?"
+	text={`Are you sure you want to delete ${idToBeDeleted}?`}
+	onSubmit={async () => {
+		isLoading = true;
+		const url = `/api/${slug}/${idToBeDeleted}`;
+		const res = await fetch(url, {
+			method: 'DELETE'
+		});
+
+		const data = await res.json();
+
+		isLoading = false;
+		closeModal('delete_item');
+		if (data.success) {
+			goto(`/bean-noodle/${slug}`);
+		}
+	}}
+	disabled={isLoading}
 />
 
 <table class="table">
@@ -76,6 +95,7 @@
 			{/each}
 			<td>
 				<a class="btn btn-xs btn-primary" href={getUrlFromQuery(searchQuery)}>search</a>
+				<a class="text-white btn btn-xs btn-error" href={$page.url.pathname}>clear</a>
 			</td>
 		</tr>
 		{#each $page.data[slug].data as row, idx}
@@ -102,6 +122,7 @@
 					<button
 						class="text-white btn btn-xs btn-error"
 						on:click={() => {
+							idToBeDeleted = row._id;
 							openModal('delete_item');
 						}}>delete</button
 					>
