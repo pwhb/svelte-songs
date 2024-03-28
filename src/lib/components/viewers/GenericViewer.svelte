@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
+	import { showToast } from '$lib/stores/toast';
 	import { DocumentMode } from '$lib/utils/enums';
 	import { parseDate } from '$lib/utils/formatters';
 	export let mode: DocumentMode;
@@ -30,6 +31,7 @@
 			const data = await res.json();
 			if (data.success) {
 				goto(`/bean-noodle/${slug}`);
+				showToast('Created Successfully!');
 			}
 		} catch (e) {
 			console.error(e);

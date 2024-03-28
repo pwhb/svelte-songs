@@ -3,6 +3,8 @@
 
 	// @ts-nocheck
 	import { page } from '$app/stores';
+	import TailwindTypes from '$lib/consts/TailwindTypes';
+	import { showToast } from '$lib/stores/toast';
 	import { closeModal, openModal } from '$lib/utils/dialog';
 	import { parseDate } from '$lib/utils/formatters';
 	import DefaultDialog from '../dialog/DefaultDialog.svelte';
@@ -37,6 +39,7 @@
 		isLoading = false;
 		closeModal('delete_item');
 		if (data.success) {
+			showToast('Deleted Successfully!', TailwindTypes.error);
 			goto(`/bean-noodle/${slug}`);
 		}
 	}}
